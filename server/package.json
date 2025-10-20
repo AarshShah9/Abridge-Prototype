@@ -1,0 +1,51 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Backend server for Bree Prototype",
+  "main": "index.js",
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "ts-node prisma/seed.ts",
+    "postinstall": "npx prisma generate",
+    "dev": "docker compose up -d && tsc && concurrently \"tsc --watch\" \"nodemon -q dist/index.js\"",
+    "devFull": "npx prisma db push --force-reset && npx prisma db push && ts-node prisma/seed.ts && tsc && concurrently \"tsc --watch\" \"nodemon -q dist/index.js\"",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@prisma/client": "^5.17.0",
+    "@types/body-parser": "^1.19.5",
+    "@types/ws": "^8.18.1",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "concurrently": "^8.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.19.2",
+    "lodash": "^4.17.21",
+    "morgan": "^1.10.0",
+    "ngrok": "^5.0.0-beta.2",
+    "nodemon": "^3.0.1",
+    "socket.io": "^4.8.1",
+    "uuidv7": "^1.0.0",
+    "ws": "^8.18.3",
+    "zod": "^3.22.4",
+    "zod-prisma-types": "^3.1.6"
+  },
+  "author": "Aarsh",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/inquirer": "^9.0.7",
+    "@types/lodash": "^4.17.1",
+    "@types/morgan": "^1.9.9",
+    "prisma": "^5.17.0",
+    "ts-node": "^10.9.2"
+  }
+}

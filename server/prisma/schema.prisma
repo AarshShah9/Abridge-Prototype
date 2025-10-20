@@ -1,0 +1,60 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  role      String   @default("doctor")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  patients  Patient[]
+}
+
+model Patient {
+  id             String       @id @default(uuid())
+  mrn            String       @unique
+  name           String
+  gender         String
+  dob            DateTime
+  age            Int
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  doctor         User        @relation(fields: [doctorId], references: [id])
+  doctorId       String
+  transcriptions         Transcription[]
+}
+
+
+model Transcription {
+  id            String   @id @default(uuid())
+  content       String
+  title         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  analysis      TranscriptionAnalysis?
+  patient       Patient        @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  patientId     String
+}
+
+model TranscriptionAnalysis {
+  id              String        @id @default(uuid())
+  deltaSummary    String[]
+  changesNew      String[]
+  changesResolved String[]
+  changesWorsened String[]
+  changesImproved String[]
+  changesUnchanged String[]
+  
+  transcription   Transcription @relation(fields: [transcriptionId], references: [id], onDelete: Cascade)
+  transcriptionId String        @unique
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
